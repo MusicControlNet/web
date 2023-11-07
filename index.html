@@ -1,9 +1,3150 @@
 <html>
- <head>
- </head>
- <body>
-   Hello World
-   <h1>Hello World</h1>
-   <p>Hello World</p>
- </body>
+
+<head>
+	<title>Music ControlNet</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+  integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<meta name="theme-color" content="#563d7c">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+<style>
+  td th {
+      height: 80px;
+      width: 160px;
+      text-align: center;
+      vertical-align: middle;
+  }
+</style>
+</head>
+
+<body bgcolor="#FFFFFF" link="#000000" vlink="#000000" alink="#000000">
+
+<div class="text-center">
+  <br>
+    <div class="text-wrap" width="200px">
+    <font face="helvetica , ariel, &#39;sans serif&#39;" size="6">
+      <b>Music ControlNet:</br> Multiple Time-varying Controls for Music Generation</b><br><br>
+    </font>
+    </div>
+
+    <p style="font-size: 1.3em; margin-bottom: 0;">
+      <a href="https://slseanwu.github.io/"> Shih-Lun Wu<sup>1,2*</sup> </a>&nbsp;
+      <a href="https://chrisdonahue.com/">Chris Donahue<sup>1</sup> </a>&nbsp;
+      <a href="https://sites.google.com/view/shinjiwatanabe"> Shinji Watanabe<sup>1</sup></a> &nbsp;
+      <a href="https://njb.github.io/"> Nicholas J. Bryan<sup>2</sup></a> &nbsp;
+    </p>
+    <p style="margin-top: 0;">
+        <sup>1</sup>School of Computer Science, Carnegie Mellon University<br>
+        <sup>2</sup>Adobe Research <br>
+        <sup>*</sup>Work done during an internship at Adobe Research <br>
+    </p>
+
+      <div class="m-5">
+          <a class="btn btn-outline-dark" href="TBD" type="button"><i
+                  class="bi bi-newspaper"></i> Paper</a>
+          <a class="btn btn-outline-dark" href="TBD" type="button">
+              <i class="bi bi-code-slash"></i> Data</a>
+          <a class="btn btn-outline-dark" href="https://youtu.be/QVr-S-DyccU" type="button"> <i
+                  class="bi bi-camera-reels"></i> Video</a>
+      </div>
+
+      <!-- <div class="m-5" style="max-width: 950px;">
+        <iframe width="560" height="315" 
+          src="https://www.youtube.com/embed/QVr-S-DyccU?si=zrU456y3XL6FFp51" 
+          title="YouTube video player" 
+          frameborder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+          allowfullscreen></iframe><br><br>
+      </div> -->
+        
+      
+      <div class="container mt-4" style="max-width: 1000px;">
+        <div class="container">
+    
+
+            <div class="container mt-4 " style="max-width: 950px;">
+              <div class="container">
+                  <div class="section">
+                      <div class="embed-responsive embed-responsive-16by9">
+                          <iframe width="560" height="315" src="https://www.youtube.com/embed/QVr-S-DyccU?si=zrU456y3XL6FFp51" frameborder="0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowfullscreen></iframe>
+                      </div>
+                      <br>
+                      <h3 class="text-justify">Abstract</h3>
+                      <hr>
+                      <p class="pr-5 pl-5 text-justify">
+                        Text-to-music generation models are now capable of generating high-quality music audio in broad styles. 
+                        However, text control is primarily suitable for the manipulation of global musical attributes like 
+                        genre, mood, and tempo, and is less suitable for precise control over time-varying attributes 
+                        such as the positions of beats in time or the changing dynamics of the music. We propose Music ControlNet,
+                        a diffusion-based music generation model that offers multiple precise, time-varying controls over 
+                        generated audio. To imbue text-to-music models with time-varying control, we propose an approach 
+                        analogous to pixel-wise control of the image-domain ControlNet method. Specifically, we extract 
+                        controls from training audio yielding paired data, and fine-tune a diffusion-based conditional generative 
+                        model over audio spectrograms given melody, dynamics, and rhythm controls. While the image-domain 
+                        Uni-ControlNet method already allows generation with any subset of controls, we devise a new strategy
+                        to allow creators to input controls that are only partially specified in time. We evaluate both on 
+                        controls extracted from audio and controls we expect creators to provide, demonstrating that we can 
+                        generate realistic music that corresponds to control inputs in both settings. While few comparable 
+                        music generation models exist, we benchmark against MusicGen, a recent model that accepts text and 
+                        melody input, and show that our model generates music that is 49% more faithful to input melodies 
+                        despite having 35x fewer parameters, training on 11x less data, and enabling two additional forms 
+                        of time-varying control. 
+                      </p>
+                  </div>
+      
+                  <br>
+
+                  <div class="section text-justify">
+                    <h2>Bibtex</h2>
+                    <hr>
+                    <div style="background-color: #e9ecef;">
+                    <pre>
+                    <code>
+                    @article{Wu2023MusicControlNet,
+                        title={Music ControlNet: Multiple Time-varying Controls for Music Generation}, 
+                        author={Shih-Lun Wu and Chris Donahue and Shinji Watanabe and Nicholas J. Bryan},
+                        year={2023},
+                        eprint={TBD},
+                        archivePrefix={arXiv},
+                        primaryClass={cs.SD}
+                    }</code>
+                    </pre>
+                    </div>
+                  </div>
+      
+
+                  
+
+
+                  <div class="section text-justify">
+
+                    <h2>Examples</h2>
+                    <table class="table table-sm text-center" style="vertical-align: middle;">
+                    <tbody>
+
+            <tr>
+              <td colspan="24">
+                  <h5 class="text-center">Melody Control</h5>
+              </td>
+              </tr>        
+              <tr>
+              <td colspan="8">
+                  <h5 class="text-center">Reference</h5>
+              </td>
+              <td colspan="8">
+                  <h5 class="text-center">Generated Music</h5>
+              </td>
+              <td colspan="8">
+                  <h5 class="text-center">Feature Plots</h5>
+              </td>
+              </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody/0/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody/0/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody/0/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody/1/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody/1/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody/1/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody/2/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody/2/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody/2/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody/3/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody/3/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody/3/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody/4/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody/4/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody/4/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody/5/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody/5/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody/5/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody/6/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody/6/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody/6/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody/7/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody/7/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody/7/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody/8/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody/8/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody/8/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody/9/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody/9/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody/9/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+              <tr>
+                  <td colspan="24">
+                      <h5 class="text-center">Dynamics Control</h5>
+                  </td>
+              </tr>
+              <tr>
+              <td colspan="16">
+                  <h5 class="text-center">Generated Music</h5>
+              </td>
+              <td colspan="8">
+                  <h5 class="text-center">Feature Plots</h5>
+              </td>
+              </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics/0/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics/0/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics/1/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics/1/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics/2/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics/2/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics/3/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics/3/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics/4/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics/4/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics/5/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics/5/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics/6/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics/6/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics/7/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics/7/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics/8/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics/8/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics/9/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics/9/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+              <tr>
+                  <td colspan="24">
+                      <h5 class="text-center">Rhythm Control</h5>
+                  </td>
+              </tr>
+              <tr>
+              <td colspan="16">
+                  <h5 class="text-center">Generated Music</h5>
+              </td>
+              <td colspan="8">
+                  <h5 class="text-center">Feature Plots</h5>
+              </td>
+              </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/rhythm/0/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/rhythm/0/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/rhythm/1/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/rhythm/1/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/rhythm/2/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/rhythm/2/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/rhythm/3/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/rhythm/3/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/rhythm/4/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/rhythm/4/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/rhythm/5/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/rhythm/5/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/rhythm/6/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/rhythm/6/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/rhythm/7/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/rhythm/7/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/rhythm/8/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/rhythm/8/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/rhythm/9/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/rhythm/9/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+              <tr>
+              <td colspan="24">
+                  <h5 class="text-center">Melody & Rhythm Control</h5>
+              </td>
+              </tr>        
+              <tr>
+              <td colspan="8">
+                  <h5 class="text-center">Reference</h5>
+              </td>
+              <td colspan="8">
+                  <h5 class="text-center">Generated Music</h5>
+              </td>
+              <td colspan="8">
+                  <h5 class="text-center">Feature Plots</h5>
+              </td>
+              </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_rhythm/0/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_rhythm/0/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_rhythm/0/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_rhythm/1/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_rhythm/1/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_rhythm/1/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_rhythm/2/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_rhythm/2/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_rhythm/2/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_rhythm/3/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_rhythm/3/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_rhythm/3/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_rhythm/4/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_rhythm/4/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_rhythm/4/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_rhythm/5/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_rhythm/5/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_rhythm/5/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_rhythm/6/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_rhythm/6/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_rhythm/6/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_rhythm/7/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_rhythm/7/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_rhythm/7/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_rhythm/8/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_rhythm/8/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_rhythm/8/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_rhythm/9/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_rhythm/9/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_rhythm/9/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+              <tr>
+                  <td colspan="24">
+                      <h5 class="text-center">Dynamics & Rhythm Control</h5>
+                  </td>
+              </tr>
+              <tr>
+              <td colspan="16">
+                  <h5 class="text-center">Generated Music</h5>
+              </td>
+              <td colspan="8">
+                  <h5 class="text-center">Feature Plots</h5>
+              </td>
+              </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics_rhythm/0/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics_rhythm/0/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics_rhythm/1/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics_rhythm/1/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics_rhythm/2/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics_rhythm/2/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics_rhythm/3/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics_rhythm/3/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics_rhythm/4/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics_rhythm/4/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics_rhythm/5/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics_rhythm/5/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics_rhythm/6/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics_rhythm/6/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics_rhythm/7/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics_rhythm/7/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics_rhythm/8/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics_rhythm/8/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics_rhythm/9/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics_rhythm/9/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+              <tr>
+              <td colspan="24">
+                  <h5 class="text-center">Melody & Dynamics Control</h5>
+              </td>
+              </tr>        
+              <tr>
+              <td colspan="8">
+                  <h5 class="text-center">Reference</h5>
+              </td>
+              <td colspan="8">
+                  <h5 class="text-center">Generated Music</h5>
+              </td>
+              <td colspan="8">
+                  <h5 class="text-center">Feature Plots</h5>
+              </td>
+              </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_dynamics/0/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_dynamics/0/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_dynamics/0/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_dynamics/1/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_dynamics/1/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_dynamics/1/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_dynamics/2/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_dynamics/2/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_dynamics/2/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_dynamics/3/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_dynamics/3/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_dynamics/3/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_dynamics/4/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_dynamics/4/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_dynamics/4/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_dynamics/5/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_dynamics/5/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_dynamics/5/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_dynamics/6/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_dynamics/6/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_dynamics/6/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_dynamics/7/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_dynamics/7/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_dynamics/7/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_dynamics/8/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_dynamics/8/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_dynamics/8/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_dynamics/9/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_dynamics/9/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_dynamics/9/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+              <tr>
+                  <td colspan="24">
+                      <h5 class="text-center">Melody, Dynamics, & Rhythm Control</h5>
+                  </td>
+              </tr>
+              <tr>
+              <td colspan="16">
+                  <h5 class="text-center">Generated Music</h5>
+              </td>
+              <td colspan="8">
+                  <h5 class="text-center">Feature Plots</h5>
+              </td>
+              </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/all/0/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/all/0/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/all/1/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/all/1/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/all/2/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/all/2/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/all/3/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/all/3/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/all/4/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/all/4/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/all/5/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/all/5/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/all/6/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/all/6/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/all/7/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/all/7/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/all/8/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/all/8/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/all/9/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/all/9/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+              <tr>
+              <td colspan="24">
+                  <h5 class="text-center">Partial Melody Control</h5>
+              </td>
+              </tr>        
+              <tr>
+              <td colspan="8">
+                  <h5 class="text-center">Reference</h5>
+              </td>
+              <td colspan="8">
+                  <h5 class="text-center">Generated Music</h5>
+              </td>
+              <td colspan="8">
+                  <h5 class="text-center">Feature Plots</h5>
+              </td>
+              </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_partial/0/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_partial/0/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_partial/0/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_partial/1/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_partial/1/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_partial/1/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_partial/2/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_partial/2/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_partial/2/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_partial/3/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_partial/3/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_partial/3/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_partial/4/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_partial/4/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_partial/4/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_partial/5/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_partial/5/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_partial/5/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_partial/6/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_partial/6/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_partial/6/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_partial/7/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_partial/7/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_partial/7/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_partial/8/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_partial/8/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_partial/8/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_partial/9/ref_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                      <audio controls>
+                          <source src="cherrypicked_examples/melody_partial/9/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/melody_partial/9/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+              <tr>
+                  <td colspan="24">
+                      <h5 class="text-center">Partial Dynamics Control</h5>
+                  </td>
+              </tr>
+              <tr>
+              <td colspan="16">
+                  <h5 class="text-center">Generated Music</h5>
+              </td>
+              <td colspan="8">
+                  <h5 class="text-center">Feature Plots</h5>
+              </td>
+              </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics_partial/0/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics_partial/0/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics_partial/1/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics_partial/1/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics_partial/2/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics_partial/2/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics_partial/3/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics_partial/3/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics_partial/4/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics_partial/4/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics_partial/5/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics_partial/5/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics_partial/6/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics_partial/6/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics_partial/7/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics_partial/7/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics_partial/8/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics_partial/8/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/dynamics_partial/9/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/dynamics_partial/9/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+              <tr>
+                  <td colspan="24">
+                      <h5 class="text-center">Partial Rhythm Control</h5>
+                  </td>
+              </tr>
+              <tr>
+              <td colspan="16">
+                  <h5 class="text-center">Generated Music</h5>
+              </td>
+              <td colspan="8">
+                  <h5 class="text-center">Feature Plots</h5>
+              </td>
+              </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/rhythm_partial/0/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/rhythm_partial/0/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/rhythm_partial/1/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/rhythm_partial/1/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/rhythm_partial/2/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/rhythm_partial/2/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/rhythm_partial/3/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/rhythm_partial/3/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/rhythm_partial/4/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/rhythm_partial/4/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/rhythm_partial/5/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/rhythm_partial/5/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/rhythm_partial/6/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/rhythm_partial/6/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/rhythm_partial/7/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/rhythm_partial/7/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/rhythm_partial/8/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/rhythm_partial/8/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="16">
+                      <audio controls>
+                          <source src="cherrypicked_examples/rhythm_partial/9/gen_audio.mp3" type="audio/mp3">
+                      Your browser does not support the audio element.
+                      </audio>
+                  </td>
+                  <td colspan="8">
+                  <img src="cherrypicked_examples/rhythm_partial/9/gen_feats.jpg" alt="Features" height="100">
+                  </td>
+                  </tr>
+  
+                    </tbody>
+                    </table>
+
+                      <h2>Random Examples</h2>
+
+                      <table class="table table-sm text-center" style="vertical-align: middle;">
+                      <tbody>
+
+                        <tr>
+                          <td colspan="24">
+                              <h5 class="text-center">Melody Control</h5>
+                          </td>
+                          </tr>        
+                          <tr>
+                          <td colspan="8">
+                              <h5 class="text-center">Reference</h5>
+                          </td>
+                          <td colspan="8">
+                              <h5 class="text-center">Generated Music</h5>
+                          </td>
+                          <td colspan="8">
+                              <h5 class="text-center">Feature Plots</h5>
+                          </td>
+                          </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody/0/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody/0/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody/0/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody/1/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody/1/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody/1/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody/2/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody/2/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody/2/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody/3/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody/3/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody/3/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody/4/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody/4/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody/4/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody/5/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody/5/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody/5/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody/6/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody/6/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody/6/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody/7/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody/7/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody/7/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody/8/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody/8/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody/8/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody/9/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody/9/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody/9/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                          <tr>
+                              <td colspan="24">
+                                  <h5 class="text-center">Dynamics Control</h5>
+                              </td>
+                          </tr>
+                          <tr>
+                          <td colspan="16">
+                              <h5 class="text-center">Generated Music</h5>
+                          </td>
+                          <td colspan="8">
+                              <h5 class="text-center">Feature Plots</h5>
+                          </td>
+                          </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics/0/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics/0/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics/1/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics/1/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics/2/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics/2/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics/3/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics/3/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics/4/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics/4/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics/5/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics/5/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics/6/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics/6/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics/7/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics/7/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics/8/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics/8/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics/9/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics/9/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                          <tr>
+                              <td colspan="24">
+                                  <h5 class="text-center">Rhythm Control</h5>
+                              </td>
+                          </tr>
+                          <tr>
+                          <td colspan="16">
+                              <h5 class="text-center">Generated Music</h5>
+                          </td>
+                          <td colspan="8">
+                              <h5 class="text-center">Feature Plots</h5>
+                          </td>
+                          </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/rhythm/0/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/rhythm/0/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/rhythm/1/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/rhythm/1/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/rhythm/2/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/rhythm/2/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/rhythm/3/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/rhythm/3/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/rhythm/4/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/rhythm/4/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/rhythm/5/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/rhythm/5/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/rhythm/6/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/rhythm/6/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/rhythm/7/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/rhythm/7/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/rhythm/8/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/rhythm/8/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/rhythm/9/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/rhythm/9/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                          <tr>
+                          <td colspan="24">
+                              <h5 class="text-center">Melody & Rhythm Control</h5>
+                          </td>
+                          </tr>        
+                          <tr>
+                          <td colspan="8">
+                              <h5 class="text-center">Reference</h5>
+                          </td>
+                          <td colspan="8">
+                              <h5 class="text-center">Generated Music</h5>
+                          </td>
+                          <td colspan="8">
+                              <h5 class="text-center">Feature Plots</h5>
+                          </td>
+                          </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_rhythm/0/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_rhythm/0/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_rhythm/0/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_rhythm/1/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_rhythm/1/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_rhythm/1/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_rhythm/2/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_rhythm/2/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_rhythm/2/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_rhythm/3/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_rhythm/3/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_rhythm/3/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_rhythm/4/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_rhythm/4/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_rhythm/4/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_rhythm/5/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_rhythm/5/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_rhythm/5/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_rhythm/6/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_rhythm/6/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_rhythm/6/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_rhythm/7/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_rhythm/7/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_rhythm/7/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_rhythm/8/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_rhythm/8/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_rhythm/8/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_rhythm/9/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_rhythm/9/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_rhythm/9/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                          <tr>
+                              <td colspan="24">
+                                  <h5 class="text-center">Dynamics & Rhythm Control</h5>
+                              </td>
+                          </tr>
+                          <tr>
+                          <td colspan="16">
+                              <h5 class="text-center">Generated Music</h5>
+                          </td>
+                          <td colspan="8">
+                              <h5 class="text-center">Feature Plots</h5>
+                          </td>
+                          </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics_rhythm/0/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics_rhythm/0/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics_rhythm/1/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics_rhythm/1/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics_rhythm/2/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics_rhythm/2/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics_rhythm/3/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics_rhythm/3/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics_rhythm/4/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics_rhythm/4/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics_rhythm/5/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics_rhythm/5/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics_rhythm/6/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics_rhythm/6/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics_rhythm/7/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics_rhythm/7/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics_rhythm/8/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics_rhythm/8/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics_rhythm/9/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics_rhythm/9/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                          <tr>
+                          <td colspan="24">
+                              <h5 class="text-center">Melody & Dynamics Control</h5>
+                          </td>
+                          </tr>        
+                          <tr>
+                          <td colspan="8">
+                              <h5 class="text-center">Reference</h5>
+                          </td>
+                          <td colspan="8">
+                              <h5 class="text-center">Generated Music</h5>
+                          </td>
+                          <td colspan="8">
+                              <h5 class="text-center">Feature Plots</h5>
+                          </td>
+                          </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_dynamics/0/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_dynamics/0/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_dynamics/0/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_dynamics/1/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_dynamics/1/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_dynamics/1/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_dynamics/2/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_dynamics/2/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_dynamics/2/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_dynamics/3/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_dynamics/3/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_dynamics/3/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_dynamics/4/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_dynamics/4/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_dynamics/4/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_dynamics/5/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_dynamics/5/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_dynamics/5/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_dynamics/6/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_dynamics/6/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_dynamics/6/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_dynamics/7/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_dynamics/7/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_dynamics/7/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_dynamics/8/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_dynamics/8/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_dynamics/8/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_dynamics/9/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_dynamics/9/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_dynamics/9/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                          <tr>
+                              <td colspan="24">
+                                  <h5 class="text-center">Melody, Dynamics, & Rhythm Control</h5>
+                              </td>
+                          </tr>
+                          <tr>
+                          <td colspan="16">
+                              <h5 class="text-center">Generated Music</h5>
+                          </td>
+                          <td colspan="8">
+                              <h5 class="text-center">Feature Plots</h5>
+                          </td>
+                          </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/all/0/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/all/0/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/all/1/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/all/1/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/all/2/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/all/2/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/all/3/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/all/3/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/all/4/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/all/4/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/all/5/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/all/5/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/all/6/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/all/6/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/all/7/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/all/7/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/all/8/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/all/8/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/all/9/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/all/9/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                          <tr>
+                          <td colspan="24">
+                              <h5 class="text-center">Partial Melody Control</h5>
+                          </td>
+                          </tr>        
+                          <tr>
+                          <td colspan="8">
+                              <h5 class="text-center">Reference</h5>
+                          </td>
+                          <td colspan="8">
+                              <h5 class="text-center">Generated Music</h5>
+                          </td>
+                          <td colspan="8">
+                              <h5 class="text-center">Feature Plots</h5>
+                          </td>
+                          </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_partial/0/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_partial/0/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_partial/0/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_partial/1/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_partial/1/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_partial/1/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_partial/2/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_partial/2/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_partial/2/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_partial/3/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_partial/3/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_partial/3/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_partial/4/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_partial/4/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_partial/4/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_partial/5/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_partial/5/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_partial/5/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_partial/6/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_partial/6/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_partial/6/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_partial/7/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_partial/7/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_partial/7/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_partial/8/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_partial/8/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_partial/8/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_partial/9/ref_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                                  <audio controls>
+                                      <source src="random_examples/melody_partial/9/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/melody_partial/9/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                          <tr>
+                              <td colspan="24">
+                                  <h5 class="text-center">Partial Dynamics Control</h5>
+                              </td>
+                          </tr>
+                          <tr>
+                          <td colspan="16">
+                              <h5 class="text-center">Generated Music</h5>
+                          </td>
+                          <td colspan="8">
+                              <h5 class="text-center">Feature Plots</h5>
+                          </td>
+                          </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics_partial/0/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics_partial/0/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics_partial/1/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics_partial/1/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics_partial/2/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics_partial/2/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics_partial/3/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics_partial/3/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics_partial/4/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics_partial/4/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics_partial/5/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics_partial/5/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics_partial/6/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics_partial/6/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics_partial/7/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics_partial/7/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics_partial/8/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics_partial/8/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/dynamics_partial/9/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/dynamics_partial/9/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                          <tr>
+                              <td colspan="24">
+                                  <h5 class="text-center">Partial Rhythm Control</h5>
+                              </td>
+                          </tr>
+                          <tr>
+                          <td colspan="16">
+                              <h5 class="text-center">Generated Music</h5>
+                          </td>
+                          <td colspan="8">
+                              <h5 class="text-center">Feature Plots</h5>
+                          </td>
+                          </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/rhythm_partial/0/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/rhythm_partial/0/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/rhythm_partial/1/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/rhythm_partial/1/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/rhythm_partial/2/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/rhythm_partial/2/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/rhythm_partial/3/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/rhythm_partial/3/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/rhythm_partial/4/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/rhythm_partial/4/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/rhythm_partial/5/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/rhythm_partial/5/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/rhythm_partial/6/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/rhythm_partial/6/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/rhythm_partial/7/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/rhythm_partial/7/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/rhythm_partial/8/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/rhythm_partial/8/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+                              <tr>
+                              <td colspan="16">
+                                  <audio controls>
+                                      <source src="random_examples/rhythm_partial/9/gen_audio.mp3" type="audio/mp3">
+                                  Your browser does not support the audio element.
+                                  </audio>
+                              </td>
+                              <td colspan="8">
+                              <img src="random_examples/rhythm_partial/9/gen_feats.jpg" alt="Features" height="100">
+                              </td>
+                              </tr>
+              
+                      
+
+                      </tbody>
+                      </table>
+      
+                  </div>
+      
+      
+                  <div class="section">
+                    <br>
+                    <h3 class="text-justify">Acknowledgements</h3>
+                    <hr>
+                    <p class="pr-5 pl-5 text-justify">
+                      Thank you to Ge Zhu, Juan-Pablo Caceres, Zhiyao Duan, and Nicholas J. Bryan for sharing 
+                      their soon-to-be published high-fidelity vocoder work used for the demo video (a full 
+                      citation will be updated soon).
+                    </p>
+                  </div>
+
+          <hr>
+          <footer>
+              <div class="container">
+                  <div class="text-center">
+                  </div>
+              </div>
+          </footer>
+
+          </div>
+
+
+
+</div>
+
+<script>
+  const showImageButton = document.getElementById("show-image-button");
+  const imageContainer = document.getElementById("image-container");
+
+  showImageButton.addEventListener("click", function () {
+      if (imageContainer.style.display === "none") {
+          imageContainer.style.display = "block";
+      } else {
+          imageContainer.style.display = "none";
+      }
+  });
+</script>
+				
+					
+</body>
+
 </html>
