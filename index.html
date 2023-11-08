@@ -93,20 +93,20 @@ td {
                 </div><br>
 
                 <!-- Show bibtext -->
-                <div class="section text-justify">
+                <div class="section text-left" div style='text-align:left'>
                   <h1>Bibtex</h1>
-                  <hr>
-                  <div style="background-color: #e9ecef;">
+                  <!-- <hr> -->
+                  <div style="background-color: #e9ecef; text-align:left;" >
                   <pre>
-                  <code>
-                  @article{Wu2023MusicControlNet,
-                      title={Music ControlNet: Multiple Time-varying Controls for Music Generation}, 
-                      author={Shih-Lun Wu and Chris Donahue and Shinji Watanabe and Nicholas J. Bryan},
-                      year={2023},
-                      eprint={TBD},
-                      archivePrefix={arXiv},
-                      primaryClass={cs.SD}
-                  }</code>
+        <code>
+        @article{Wu2023MusicControlNet,
+            title={Music ControlNet: Multiple Time-varying Controls for Music Generation}, 
+            author={Wu, Shih-Lun and Donahue, Chris and Watanabe, Shinji and Bryan, Nicholas J.},
+            year={2023},
+            eprint={TBD},
+            archivePrefix={arXiv},
+            primaryClass={cs.SD}
+        }</code>
                   </pre>
                   </div>
                 </div>
@@ -118,7 +118,15 @@ td {
             <h1>Examples (Cherry Picked)</h1>
             Please find generated music and feature plots with different control combinations including
             melody, dynamics, and rhythm, and their combinations as well as partially-specified controls over time.
-            The examples here are mildy cherry-picked to show the best results. For random examples, see below.
+            The examples here are mildly cherry-picked to show the best results. For random (non-cherry-picked) examples, please see the section below.
+            <br><br>
+
+            For each example, the first row of plots are controls extracted from generation, and the second 
+            row ones are input controls. Examples with gray shaded regions denote partially-specified controls, 
+            where the gray region is not enforced. A melody reference file is also provided for examples that 
+            includes melody control.
+
+
             <table class="table table-sm text-center" style="vertical-align: middle;">
             <tbody>
 
@@ -1614,6 +1622,15 @@ td {
             Please find generated music and feature plots with different control combinations including
             melody, dynamics, and rhythm, and their combinations as well as partially-specified controls over time.
             The examples here randomly generated.
+
+            <br><br>
+
+            For each example, the first row of plots are controls extracted from generation, and the second 
+            row ones are input controls. Examples with gray shaded regions denote partially-specified controls, 
+            where the gray region is not enforced. A melody reference file is also provided for examples that 
+            includes melody control.
+
+
             <table class="table table-sum text-center" style="vertical-align; middle;">
               <tbody>
 
